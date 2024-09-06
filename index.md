@@ -31,6 +31,17 @@ With the second scan complete, the output has now been written to the text file.
   <img width="352" height="276" src="assets/fig1.png">
 </p>
 
+Now that I have located the directory in which my file is located, I can now use a command to view its contents.
+
+With my target in sight, I type the command “cat bicescan1.txt.” The “cat” command is used to concatenate, or link, files together and print them as an output onto the command prompt (ShellHacks). After hitting “enter,” the output logs of the second scan are once again called forth. The final few entries in the scanning output explain that 256 IP addresses have been scanned in the 172.16.3.0/24 subnet and of those 256, 95 of the IP addresses are considered “up” or “running.” The figure below shows this snippet of the output:
+
+- <i>Figure 2</i>: The final few lines of the scanning output. Points of interest include the number of IP addresses scanned and the number that are up. Also, and perhaps less significantly, this scan took approximately seven seconds longer.
+
+<p align="center">
+  <img width="610" height="54" src="assets/fig2.png">
+</p>
+
+
 ## Header 2
 
 > This is a blockquote following a header.
