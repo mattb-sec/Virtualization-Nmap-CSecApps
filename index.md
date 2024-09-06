@@ -1,5 +1,5 @@
 
-# Accessing SimSpace and Exploring the Virtual Network
+# Accessing SimSpace, Exploring the Virtual Network,and Accessing the win-hunt-10 Virtual Machine 
 
 ## Introduction
 
@@ -41,111 +41,97 @@ With my target in sight, I type the command “cat bicescan1.txt.” The “cat�
   <img width="610" height="54" src="assets/fig2.png">
 </p>
 
+To get a better understanding of what this means, we must refer to the network map and get a better look at this network’s structure.
 
-## Header 2
+## Evaluating the Network Map and Executing the UDP Nmap Scans
 
-> This is a blockquote following a header.
->
-> When something is important enough, you do it even if the odds are not in your favor.
+As mentioned, the network map shows the 172.16.3.0/24 host subnet with its individual IP addresses (however, contrary to what PowerShell states, I count only 236 addresses). But to go deeper, the entire network map must be observed:
 
-### Header 3
+- <i>Figure 3</i>: This is the network in which the lab is performed. From left to right and top to bottom, the servers, core router, firewall, edge router, and host subnet are shown. Also note the number of IP addresses that are offline. Further detail is given below.
 
-```js
-// Javascript code with syntax highlighting.
-var fun = function lang(l) {
-  dateformat.i18n = require('./lang/' + l)
-  return true;
-}
-```
+<p align="center">
+  <img width="622" height="397" src="assets/fig3.png">
+</p>
 
-```ruby
-# Ruby code with syntax highlighting
-GitHubPages::Dependencies.gems.each do |gem, version|
-  s.add_dependency(gem, "= #{version}")
-end
-```
+The figure above reproduces the network map as it is seen in SimSpace. On the far left-hand side, there are two ISCS servers located under 172.16.2.0/24. This will be important to keep in mind for the other half of this section. Next, we see that this server address is linked to the ISCS core router. This core router is considered the center of the network as it joins all the parts together. To go down, we see that the ISCS core router is linked to the ISCS edge router. In between them, however, is the ISCS firewall which will ensure that no unwanted data will travel to or from the core router. Finally, on the right-hand side of the network map, we see the host subnet with all the IP addresses it connects. Among these is the win-hunt-10 virtual machine and the kali-hunt-31 terminal I will use in a later section. You will notice that there is a fairly even mix of IP addresses that are running (green) and stopped (red). As mentioned earlier, this diagram does line up with the output of the network scans as the IP addresses of the “running” hosts are the same ones the network scans consider to be “up.” With this information in mind, we can now look at what happens when we scan a server IP address.
 
-#### Header 4
+We now begin the final scans of the lab. The first one uses the command “nmap -v -sU 172.16.2.2 > bicemachine10scan.txt.” This command is, for the most part, now familiar to us with the exception of two striking details: First, the IP address is no longer focused on the host subnet and is now using the IP address of the ISCS file server. Second, this command utilizes the “sU” switch which switches to a UDP scan instead of a TCP (Nmap, “UDP Scan”). This command, then, will send a UDP packet to every IP address that is associated with the server. Perhaps one of the more significant reasons for this change is the fact that UDP scans are faster (and more reckless) since they forgo error checking (Tutorialspoint). The main objective of this scan is to identify how many ports in the network are open. After running the scan, I scrolled through the section where it assesses the ports and checked the status of each one. I found that a vast majority of the ports were closed except for three: 135: msrpc, 139: netbios-ssn, and 445: microsoft-ds. The figure below shows this snippet of the output:
 
-*   This is an unordered list following a header.
-*   This is an unordered list following a header.
-*   This is an unordered list following a header.
+- <i>Figure 4</i>: Shown below is the section of the second scan that analyzes potential ports. Highlighted are ports 135, 139, and 445 which were all open. No other open ports appear throughout the remainder of the scan.
 
-##### Header 5
+<p align="center">
+  <img width="299" height="465" src="assets/fig4.png">
+</p>
 
-1.  This is an ordered list following a header.
-2.  This is an ordered list following a header.
-3.  This is an ordered list following a header.
+With these results in mind, we are now ready to compare them to the final scan.
 
-###### Header 6
+The final scan utilizes the command “nmap -v -sn 172.16.2.2.” The “sn” option is used to disable port scanning after a host is discovered (Nmap, “Host Discovery”). In this regard, the scan is only concerned about discovering hosts and does not show the status of each individual TCP port. This appears to be a faster means of scanning for running hosts. Most noticeably was the fact that the output for this scan was considerably shorter since this scan was not concerned with the ports and their statuses. As for the results, they were overall in line with the previous scan:
 
-| head1        | head two          | three |
-|:-------------|:------------------|:------|
-| ok           | good swedish fish | nice  |
-| out of stock | good and plenty   | nice  |
-| ok           | good `oreos`      | hmm   |
-| ok           | good `zoute` drop | yumm  |
+- <i>Figure 5</i>: The final few logs of the final scanning process. Notice that the scanning process managed to find only one open host. As an aside, also note that, due to the nature of this scan, this is the fastest scan in the lab.
 
-### There's a horizontal rule below this.
+  <p align="center">
+  <img width="577" height="171" src="assets/fig5.png">
+</p>
 
-* * *
+While taking the lab quiz, I noticed something that was rather unusual. The last quiz question asked how many ports were open for the UDP scan. The correct answer was, as I found, one. However, this does not agree with my findings during this lab. As seen in figure 4, the output’s list of ports clearly shows three open ports. My only other theory is that the question was referring to the number of hosts available, but I am uncertain if these terms are interchangeable. After deleting the bicescan1 and bicemachine10scan .txt files from the machine, I am then finished with the Windows portion of the virtual machine lab.
 
-### Here is an unordered list:
+# Interfacing with the kali-hunt-31 Virtual Machine and Running Three Cyber Security Applications
 
-*   Item foo
-*   Item bar
-*   Item baz
-*   Item zip
+The final section of the lab involves interacting with a wholly new piece of the subnet. Having finished with the Windows virtual machines, I then moved on to the Kali Linux virtual machines. Once again, the directions do not specify a specific kali terminal that is to be used. Therefore, I decided to randomly go with the kali-hunt-31 terminal. In a similar fashion, I used the provided username and password and logged on.
 
-### And an ordered list:
+The directions of the lab then instruct me to choose three applications that would be useful to a security practitioner and run them. The programs that I chose were found in the toolbar to the left of the desktop. The first program I chose was Metasploit Framework. According to its official website, Metasploit is a security project that provides information about security vulnerabilities (Metasploit). No doubt this would be useful to a security analyst as this is essential information to know about any network. The figure below shows the Metasploit terminal after it has been opened:
 
-1.  Item one
-1.  Item two
-1.  Item three
-1.  Item four
+- <i>Figure 6</i>: The terminal that pops up after Metasploit is initiated. This program is command-oriented, and all actions are taken through entries in the terminal.
 
-### And a nested list:
+<p align="center">
+  <img width="474" height="286" src="assets/fig6.png">
+</p>
 
-- level 1 item
-  - level 2 item
-  - level 2 item
-    - level 3 item
-    - level 3 item
-- level 1 item
-  - level 2 item
-  - level 2 item
-  - level 2 item
-- level 1 item
-  - level 2 item
-  - level 2 item
-- level 1 item
+The second program I decided to use is the eloquently named Burp Suite. This is a program that is famous for its web vulnerability scanning and penetration testing (Port Swigger). It is also a robust program with a modular structure such that the user can apply upgrades and updates as he or she sees fit (Delta Risk). Overall, this program is like Metasploit except for the fact that this program has its own GUI interface.
 
-### Small image
+- <i>Figure 7</i>: The GUI interface of Burp Suite. The program functions by working through projects the user creates. Notice that this is the community edition which suggests the open-source nature of this program.
 
-![Octocat](https://github.githubassets.com/images/icons/emoji/octocat.png)
+<p align="center">
+  <img width="485" height="291" src="assets/fig7.png">
+</p>
 
-### Large image
+The third and final program for this lab is known as Maltego. To give a precise definition, Wikipedia states that Maltego is a software for open-source intelligence and forensics. It also provides a library of transforms from open sources and provides information in a graphical format. Once again, this program provides a GUI interface and seems to be the most complex of the three. It also has capabilities that extend beyond web vulnerability analysis and seems to be more focused on response and investigation.
 
-![Branching](https://guides.github.com/activities/hello-world/branching.png)
+- <i>Figure 8</i>: The interface of Maltego. This program has the most complex interface and is able to perform various functions regarding investigations and network monitoring. The picture shown here is of the free version.
 
+<p align="center">
+  <img width="488" height="294" src="assets/fig8.png">
+</p>
 
-### Definition lists can be used with HTML syntax.
+These the programs are what I believe to be a few of the most essential ones for any security practitioner. Metasploit with its command terminal interface provides a sufficient method for quickly checking for any vulnerabilities. Building off this, Burp Suite can be useful as a more robust tool with a wider scope that can also scan for web vulnerabilities. Moreover, its modular and open-source nature gives it the potential to be one of the most useful and dynamic programs if the user is willing to keep working with it. Finally, in the event of any breaches, Maltego would be an excellent program to investigate. Its graphical display of data will make it easy for analysts to see what went wrong and choose the best course of action in the event of a security alert. Upon finishing the execution of these programs, the lab is brought to a close.
 
-<dl>
-<dt>Name</dt>
-<dd>Godzilla</dd>
-<dt>Born</dt>
-<dd>1952</dd>
-<dt>Birthplace</dt>
-<dd>Japan</dd>
-<dt>Color</dt>
-<dd>Green</dd>
-</dl>
+## Conclusion
 
-```
-Long, single-line code blocks should not wrap. They should horizontally scroll if they are too long. This line should be long enough to demonstrate this.
-```
+Overall, I feel that this lab was a good introduction to SimSpace, its virtual machines and Nmap. Although it was not too difficult, it was still helpful to learn the ins and outs of these tools of cyber security training. The Windows portion especially provided some insight for properly using Nmap. This is information that I could potentially apply right now since I have attempted to use it in the past. Moreover, the Kali Linux provided a rather interesting outlook as to how a security practitioner’s desktop would look. Aside from some occasional speed bumps, the lab went smoothly, and I look forward to working with the next one.
 
-```
-The final element.
-```
+# References
+
+- <a href="https://www.tutorialspoint.com/difference-between-tcp-and-udp" target="_blank">(n.d.). Retrieved from tutorialspoint.com</a><br>
+
+- <a href="https://www.shellhacks.com/windows-cat-equivalent-cmd-powershell/" target="_blank">Admin. (2020, March 05). Windows: `Cat` Equivalent – CMD & PowerShell. Retrieved from shellhacks.com</a><br>
+
+- <a href="https://portswigger.net/burp" target="_blank">Burp Suite - Application Security Testing Software. (n.d.). Retrieved from portswinger.net</a><br>
+
+- <a href="https://sock-raw.org/nmap-ncrack/nsock" target="_blank">Chantzis, F. (n.d.). Nmap/Ncrack. Retrieved from sock-raw.org</a><br>
+
+- <a href="https://nmap.org/book/output-formats-commandline-flags" target="_blank">Command-line Flags: Nmap Network Scanning. (n.d.). Retrieved from nmap.org</a><br>
+
+- <a href="https://nmap.org/book/host-discovery-controls" target="_blank">Host Discovery Controls: Nmap Network Scanning. (n.d.). Retrieved from nmap.org</a><br>
+
+- <a href="https://deltarisk.com/blog/how-to-use-burp-suite-professional-for-web-application-security-part-one/" target="_blank">Huron, S. (2020, May 18). Burp Suite Professional for Web Application Security. Retrieved from deltarisk.com</a><br>
+
+- <a href="https://docs.microsoft.com/en-us/powershell/scripting/overview?view=powershell-7.1" target="_blank">Joeyaiello. (n.d.). What is PowerShell? - PowerShell. Retrieved from microsoft.com</a><br>
+
+- <a href="https://en.wikipedia.org/wiki/Maltego" target="_blank">Maltego. (2020, December 23). Retrieved from wikipedia.org</a><br>
+
+- <a href="https://www.mssqltips.com/sqlservertip/5058/using-powershell-to-work-with-directories-and-files/" target="_blank">Miner, J. (2017, August 31). Using PowerShell to Work with Directories and Files. Retrieved from mssqltips.com</a><br>
+
+- <a href="https://www.metasploit.com/" target="_blank">Penetration Testing Software, Pen Testing Security. (n.d.). Retrieved from metasploit.com</a><br>
+
+- <a href="https://nmap.org/book/scan-methods-udp-scan" target="_blank">UDP Scan (-sU): Nmap Network Scanning. (n.d.). Retrieved from nmap.org</a>
+
