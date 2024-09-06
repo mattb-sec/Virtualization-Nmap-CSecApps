@@ -5,7 +5,7 @@
 
 SimSpace is a service that is used for conducting simulations of cyber warfare and training cyber security students. This lab introduces SimSpace and gives instruction over a few of the various ways one can interface with virtual machines. Most of the lab is interacting with a Windows virtual machine and running network scans with basic parameters followed by analysis of the results. The lab then concludes with running a Kali Linux virtual machine and executing three of its installed cyber security applications.
 
-## Opening SimSpcae and Accessing the Virtual Machine
+## Opening SimSpace and Accessing the Virtual Machine
 
 I begin this lab by logging into SimSpace and familiarizing myself with its user interface. I read over the guide a few times in order to have a better understanding of the program. In this case, my only concern was the “events” pane. From there, I navigated under the “live action events panel” since this event is intended to be interactive. After selecting my course’s class range under the “virtual machines” tab, I was given a large list of all the virtual machines that were running in the network. After some scrolling, I found the virtual machines running windows, which are named with the convention “win-hunt-##,” were located nearer to the bottom of the list.
 
@@ -69,7 +69,7 @@ The final scan utilizes the command “nmap -v -sn 172.16.2.2.” The “sn” o
 
 - <i>Figure 5</i>: The final few logs of the final scanning process. Notice that the scanning process managed to find only one open host. As an aside, also note that, due to the nature of this scan, this is the fastest scan in the lab.
 
-  <p align="center">
+<p align="center">
   <img width="577" height="171" src="assets/fig5.png">
 </p>
 
