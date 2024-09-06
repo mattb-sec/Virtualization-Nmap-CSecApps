@@ -113,7 +113,7 @@ Overall, I feel that this lab was a good introduction to SimSpace, its virtual m
 
 - <a href="https://www.tutorialspoint.com/difference-between-tcp-and-udp" target="_blank">(n.d.). Retrieved from tutorialspoint.com</a><br>
 
-- <a href="https://www.shellhacks.com/windows-cat-equivalent-cmd-powershell/" target="_blank">Admin. (2020, March 05). Windows: `Cat` Equivalent – CMD & PowerShell. Retrieved from shellhacks.com</a><br>
+- <a href="https://www.shellhacks.com/windows-cat-equivalent-cmd-powershell/" target="_blank">Admin. (2020, March 05). Windows: Cat Equivalent – CMD & PowerShell. Retrieved from shellhacks.com</a><br>
 
 - <a href="https://portswigger.net/burp" target="_blank">Burp Suite - Application Security Testing Software. (n.d.). Retrieved from portswinger.net</a><br>
 
